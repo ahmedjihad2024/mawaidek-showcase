@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>UIDeviceFamily</key>
+		<array>
+			<integer>1</integer>
+		</array>
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>en</string>
+			<string>ar</string>
+		</array>
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<true />
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<key>FirebaseMessagingAutoInitEnabled</key>
+		<false />
+		<key>NSCameraUsageDescription</key>
+		<string>Mawaeidk needs camera access to take a photo for your patient profile, which helps
+			doctors identify you during your medical appointments.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Mawaeidk uses your location to find nearby doctors, clinics, and hospitals, and to
+			send you reminders about upcoming medical appointments. For example, we may remind you
+			when you&apos;re near a clinic where you have a scheduled appointment.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Mawaeidk uses your location to find nearby doctors, clinics, and hospitals in your
+			area. For example, when you search for a cardiologist, we&apos;ll show you the nearest
+			available doctors and display the distance to each clinic.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to your photo library to upload profile pictures and images.</string>
+		<key>NSUserNotificationsUsageDescription</key>
+		<string>Mawaeidk would like to send you notifications about appointment reminders, special
+			offers, and updates on your bookings and medical services.</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true />
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>UIRequiresFullScreen</key>
+		<true />
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true />
+		<key>NSMicrophoneUsageDescription</key>
+		<string>This app needs access to your microphone to record videos.</string>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Mawaeidk</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>Mawaeidk</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+	</dict>
+</plist>

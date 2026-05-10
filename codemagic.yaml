@@ -1,0 +1,90 @@
+# Codemagic CI/CD config for Mawaidikom (iOS).
+#
+# Why CI for iOS at all: the team's only Mac is an Intel 2018 model that
+# cannot run macOS Tahoe, and Apple requires Xcode 26 (Tahoe-only) for
+# any App Store / TestFlight upload from April 2026 onwards. Codemagic
+# provides hosted Mac VMs with Xcode 26 already installed, which is the
+# cleanest path to keep shipping iOS releases without the team having
+# to upgrade hardware.
+#
+# Trigger: pushes to the `ios-release` branch. That branch carries the
+# legacy Mawaeidk branding + payment-enabled state (see git history),
+# kept distinct from `master` (which is the truth for new development)
+# and `android-release` (Play Store, payment hidden).
+#
+# Required secrets / integrations (configured in Codemagic dashboard):
+#   * App Store Connect API key uploaded as integration `mawadk-asc`
+#   * Environment variable group `mawadk-secrets` with:
+#       SENTRY_DSN = the Mawaidikom Sentry project DSN
+#
+# Bundle id `com.azsystem.mawaeidk` must already exist on
+# https://developer.apple.com/account/resources/identifiers/list with
+# Push Notifications capability enabled, and the matching App record
+# must exist on App Store Connect — Codemagic does not create either.
+
+workflows:
+  ios-testflight:
+    name: iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+    integrations:
+      app_store_connect: mawadk-asc
+    environment:
+      ios_signing:
+        # Automatic — Codemagic mints provisioning profiles via the
+        # App Store Connect API key on every build, so we never check
+        # certificates into the repo and rotation is a non-event.
+        distribution_type: app_store
+        bundle_identifier: com.azsystem.mawaeidk
+      groups:
+        - mawadk-secrets
+      flutter: 3.38.9
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: ios-release
+          include: true
+          source: true
+      cancel_previous_builds: true
+    scripts:
+      - name: Flutter dependencies
+        script: |
+          flutter packages pub get
+      - name: Pod install
+        script: |
+          # Use bundle install if a Gemfile is present, otherwise fall
+          # straight to pod install. Either way Codemagic ships modern
+          # CocoaPods, no version pinning needed.
+          cd ios && pod install --repo-update
+      - name: Build IPA
+        script: |
+          # Build number comes straight off pubspec.yaml so the source
+          # of truth lives in git. Bump pubspec when shipping.
+          # (We previously had auto-bump-from-App-Store logic here but
+          # it required APP_STORE_APP_ID and silently fell back to 0
+          # when the env var was missing — pubspec is more predictable.)
+          flutter build ipa --release \
+            --dart-define=SENTRY_DSN="$SENTRY_DSN"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Submit straight to TestFlight internal testers. Promotion to
+        # external testers / production is a manual step on App Store
+        # Connect — we deliberately don't auto-promote.
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+        expire_build_submitted_for_review: true
+      email:
+        recipients:
+          - // hidden email
+        notify:
+          success: true
+          failure: true
